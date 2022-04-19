@@ -79,8 +79,9 @@ class Category {
   static Future<List<Category>> readAllCategories() async {
     final db = await MainDatabase.instance.database;
 
-    final orderBy = '${CategoryFields.name} ASC';
-    final result = await db.query(tableCategory, orderBy: orderBy);
+    // final orderBy = '${CategoryFields.name} ASC';
+    // final result = await db.query(tableCategory, orderBy: orderBy);
+    final result = await db.query(tableCategory);
 
     return result.map((json) => Category.fromJson(json)).toList();
   }

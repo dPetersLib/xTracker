@@ -26,7 +26,7 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
   Future refreshCats() async {
     setState(() => isLoading = true);
 
-    this.categorys = await Category.readAllCategories();
+    categorys = await Category.readAllCategories();
 
     setState(() => isLoading = false);
   }
