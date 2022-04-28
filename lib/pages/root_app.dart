@@ -100,12 +100,16 @@ class _RootAppState extends State<RootApp> {
     });
   }
 
-  void _addTransaction(String txtitle, double amount, DateTime selectedDate) {
+  void _addTransaction(String txtitle, int amount, DateTime selectedDate, int typeId, int catId, int accId, int currId) {
     final newTrans = Transaction(
-      title: txtitle,
+      description: txtitle,
       amount: amount,
-      id: DateTime.now().toString(),
+      // id: DateTime.now().toString(),
       date: selectedDate,
+      typeId: typeId,
+      categoryId: catId,
+      accountId: accId,
+      currencyId: currId
     );
 
     setState(() {

@@ -8,9 +8,9 @@ class CategoryFields {
     id, name, type
   ];
 
-  static final String id = '_id';
-  static final String name = 'name';
-  static final String type = 'type';
+  static const String id = '_id';
+  static const String name = 'name';
+  static const String type = 'type';
 }
 
 class Category {

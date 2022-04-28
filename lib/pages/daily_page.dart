@@ -1,4 +1,6 @@
-import '../json/daily_json.dart';
+import '../models/transaction.dart';
+
+// import '../json/daily_json.dart';
 import '../json/day_month.dart';
 import '../theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,26 @@ class DailyPage extends StatefulWidget {
 }
 
 class _DailyPageState extends State<DailyPage> {
+  late List<Transaction> transactions;
+  bool isLoading = false;
   int activeDay = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    refreshTx();
+  }
+
+  Future refreshTx() async {
+
+    setState(() => isLoading = true);
+
+    transactions = await Transaction.readAllTx();
+
+    setState(() => isLoading = false);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,13 +128,20 @@ class _DailyPageState extends State<DailyPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-                children: List.generate(daily.length, (index) {
+            child: isLoading
+            ? CircularProgressIndicator()
+            : transactions.isEmpty 
+            ? const Text(
+              'no trasaction added',
+              style: TextStyle(color: Colors.red, fontSize: 24),
+            )
+            : Column(
+                children: List.generate(transactions.length, (index) {
               return Column(
                 children: [
                   Row(
@@ -132,7 +160,8 @@ class _DailyPageState extends State<DailyPage> {
                               ),
                               child: Center(
                                 child: Image.asset(
-                                  daily[index]['icon'],
+                                  // daily[index]['icon'],
+                                  'assets/images/bank.png',
                                   width: 30,
                                   height: 30,
                                 ),
@@ -146,7 +175,7 @@ class _DailyPageState extends State<DailyPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    daily[index]['name'],
+                                    transactions[index].description,
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: black,
@@ -155,7 +184,7 @@ class _DailyPageState extends State<DailyPage> {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    daily[index]['date'],
+                                    transactions[index].date.toString(),
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: black.withOpacity(0.5),
@@ -174,11 +203,11 @@ class _DailyPageState extends State<DailyPage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              daily[index]['price'],
+                              transactions[index].typeId == 1 ? '+ ${transactions[index].amount.toString()}' : '- ${transactions[index].amount.toString()}',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 15,
-                                  color: Colors.green),
+                                  color: transactions[index].typeId == 1 ? Colors.green : Colors.red),
                             ),
                           ],
                         ),
@@ -218,7 +247,8 @@ class _DailyPageState extends State<DailyPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Text(
-                    "\$1780.00",
+                    // Transaction.getTotalTx.toString(),
+                    '0',
                     style: TextStyle(
                         fontSize: 20,
                         color: black,

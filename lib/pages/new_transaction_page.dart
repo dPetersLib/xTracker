@@ -57,7 +57,7 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget.addTx(text, amount, _selectedDate);
+    widget.addTx(text, amount, _selectedDate, 1, 1, 1);
     // widget. means importing the function addTx from NewTransaction class above to _NewTransactionState class
 
     Navigator.of(context).pop();

@@ -1,3 +1,4 @@
+// import '../models/user.dart';
 import '../theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -9,6 +10,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  // final users = User.readAllUsers();
+  final int index = 0;
+
   TextEditingController _email =
       TextEditingController(text: "augustinepeter25@hotmail.com");
   TextEditingController firstName = TextEditingController(text: "Peter");
@@ -83,7 +87,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                          image: AssetImage('assets/images/nophoto-female.jpg'),
+                                          image: AssetImage(
+                                              'assets/images/nophoto-female.jpg'),
                                           fit: BoxFit.cover)),
                                 ),
                               )
@@ -186,55 +191,60 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 50,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                        Text(
-                          "First Name",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Color(0xff67727d)),
-                        ),
-                        Text(
-                          "Peter",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold, color: black),
-                        ),
-                SizedBox(
-                  height: 20,
-                ),
-                        Text(
-                          "Last Name",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: Color(0xff67727d)),
-                        ),
-                        Text(
-                          "Edoka",
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold, color: black),
-                        ),
-                SizedBox(
-                  height: 20,
-                ),
-                    Text(
-                      "Email",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Color(0xff67727d)),
-                    ),
-                    Text(
-                      'augustinepeter25@hotmail.com',
-                      style: TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.bold, color: black),
-                    ),
-              ],
-          )
-          )
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "First Name",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Color(0xff67727d)),
+                  ),
+                  Text(
+                    "Peter",
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: black),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Last Name",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Color(0xff67727d)),
+                  ),
+                  Text(
+                    "Edoka",
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: black),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Email",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: Color(0xff67727d)),
+                  ),
+                  Text(
+                    'augustinepeter25@hotmail.com',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: black),
+                  ),
+                ],
+              ))
         ],
       ),
     );
