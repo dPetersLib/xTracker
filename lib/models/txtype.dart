@@ -5,7 +5,7 @@ const String tableTxType = 'txtype';
 class TxTypeFields {
   static final List<String> values = [
     // all fields
-    id, type
+    id, type, color
   ];
 
   static const String id = '_id';
@@ -16,7 +16,7 @@ class TxTypeFields {
 class TxType {
   final int? id;
   final String type;
-  final String color;
+  final int color;
 
   TxType({this.id, required this.type, required this.color});
 
@@ -26,7 +26,7 @@ class TxType {
   TxType copy({
     int? id,
     String? type,
-    String? color,
+    int? color,
   }) =>
       TxType(
           id: id ?? this.id, type: type ?? this.type, color: color ?? this.color);
@@ -37,7 +37,7 @@ class TxType {
   static TxType fromJson(Map<String, Object?> json) => TxType(
         id: json[TxTypeFields.id] as int?,
         type: json[TxTypeFields.type] as String,
-        color: json[TxTypeFields.color] as String,
+        color: json[TxTypeFields.color] as int,
       );
 
   // toJson Map

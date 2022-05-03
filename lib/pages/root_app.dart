@@ -1,5 +1,6 @@
 import '../json/transaction_type_json.dart';
 import '../models/transaction.dart';
+import '../models/txtype.dart';
 import '../pages/budget_page.dart';
 import '../pages/create_budge_page.dart';
 import '../pages/daily_page.dart';
@@ -20,7 +21,9 @@ class RootApp extends StatefulWidget {
 class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   // WidgetsBindingObserver is used for checking app State
-  final List<Transaction> _utransactions = [];
+  // final List<Transaction> _utransactions = [];
+  late List<TxType> txtypes;
+  bool isLoading = false;
 
   List<Widget> pages = [
     DailyPage(),
@@ -29,10 +32,19 @@ class _RootAppState extends State<RootApp> {
     ProfilePage(),
   ];
 
+  Future refreshTxType() async {
+    setState(() => isLoading = true);
+
+    txtypes = await TxType.readAllTypes();
+
+    setState(() => isLoading = false);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    refreshTxType();
   }
 
   @override
@@ -100,21 +112,24 @@ class _RootAppState extends State<RootApp> {
     });
   }
 
-  void _addTransaction(String txtitle, int amount, DateTime selectedDate, int typeId, int catId, int accId, int currId) {
+  Future _addTransaction(String txtitle, int amount, DateTime selectedDate,
+      int typeId, int catId, int accId, int currId) async {
     final newTrans = Transaction(
-      description: txtitle,
-      amount: amount,
-      // id: DateTime.now().toString(),
-      date: selectedDate,
-      typeId: typeId,
-      categoryId: catId,
-      accountId: accId,
-      currencyId: currId
-    );
+        description: txtitle,
+        amount: amount,
+        // id: DateTime.now().toString(),
+        date: selectedDate,
+        typeId: typeId,
+        categoryId: catId,
+        accountId: accId,
+        currencyId: currId);
 
-    setState(() {
-      _utransactions.add(newTrans);
-    });
+    await Transaction.create(newTrans);
+    refreshTxType();
+
+    // setState(() {
+    //   _utransactions.add(newTrans);
+    // });
   }
 
   void _newTransactionType(BuildContext context) {
@@ -128,31 +143,33 @@ class _RootAppState extends State<RootApp> {
           ),
           content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(transactions.length, (index) {
+              children: List.generate(txtypes.length, (index) {
                 return GestureDetector(
                   child: Container(
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                        color: transactions[index]['color'],
+                        // color: Color(txtypes[index].color),
+                        color: Color(0xFFFF9000),
                         borderRadius: BorderRadius.circular(12)),
-                    child: Text(transactions[index]['type'],
+                    child: Text(txtypes[index].type,
                         style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
                           fontSize: 12,
                         )),
                   ),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.of(context).pop();
-                    showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
-                              transactions[index]['type'],
+                              txtypes[index].type,
                               textAlign: TextAlign.center,
                             ),
-                            content: NewTransaction(_addTransaction),
+                            content: NewTransaction(
+                                _addTransaction, txtypes[index].id),
                           );
                         });
                     // showModalBottomSheet(

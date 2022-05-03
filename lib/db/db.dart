@@ -102,14 +102,14 @@ INSERT INTO $tableTxType (
   ${TxTypeFields.type},
   ${TxTypeFields.color}
   )
-VALUES ('Income', 'green')
+VALUES ('Income', 0xFF43aa8b)
 ''');
     await db.execute('''
 INSERT INTO $tableTxType (
   ${TxTypeFields.type},
   ${TxTypeFields.color}
   )
-VALUES ('Expense', 'red')
+VALUES ('Expense', 0xFFec5766)
 ''');
 
     await db.execute('''

@@ -87,7 +87,7 @@ class Transaction {
         TransactionFields.id: id,
         TransactionFields.description: description,
         TransactionFields.amount: amount,
-        TransactionFields.date: date,
+        TransactionFields.date: date.toIso8601String(),
         TransactionFields.typeId: typeId,
         TransactionFields.categoryId: categoryId,
         TransactionFields.accountId: accountId,
@@ -141,7 +141,7 @@ class Transaction {
     );
   }
 
-  static Future<int> delete(int id) async {
+  static Future<int> delete(int? id) async {
     final db = await MainDatabase.instance.database;
 
     return await db.delete(
@@ -150,4 +150,22 @@ class Transaction {
       whereArgs: [id],
     );
   }
+
+//   static Future<int> getBalance() async {}
+
+//   static Future<int> getIncomeTotal() async {
+//     final db = await MainDatabase.instance.database;
+//     final result = await db.query(tableTransaction,
+//         where: '${TransactionFields.typeId} = ?', whereArgs: [1]);
+//     final List income =
+//         result.map((json) => Transaction.fromJson(json)).toList();
+//     int total = 0;
+//     for (var tx in income) {
+//       total += tx.amount;
+//     }
+//     for (var i = 0; i < income.length; i++) {
+//       total += income[i].amount
+//     }
+//   }
+// }
 }

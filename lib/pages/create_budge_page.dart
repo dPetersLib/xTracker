@@ -77,8 +77,8 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
                             fontSize: 12,
                           )),
                     ),
-                    onTap: () {
-                      showDialog(
+                    onTap: () async {
+                      await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const AlertDialog(

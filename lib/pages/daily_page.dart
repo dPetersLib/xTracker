@@ -23,14 +23,12 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   Future refreshTx() async {
-
     setState(() => isLoading = true);
 
     transactions = await Transaction.readAllTx();
 
     setState(() => isLoading = false);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,98 +129,133 @@ class _DailyPageState extends State<DailyPage> {
           const SizedBox(
             height: 30,
           ),
+          GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(12)),
+                child: const Text('Refresh',
+                    style: TextStyle(
+                      color: white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    )),
+              ),
+              onTap: () async {
+                refreshTx();
+              }),
+          const SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: isLoading
-            ? CircularProgressIndicator()
-            : transactions.isEmpty 
-            ? const Text(
-              'no trasaction added',
-              style: TextStyle(color: Colors.red, fontSize: 24),
-            )
-            : Column(
-                children: List.generate(transactions.length, (index) {
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: (size.width - 40) * 0.7,
-                        child: Row(
+                ? CircularProgressIndicator()
+                : transactions.isEmpty
+                    ? const Text(
+                        'no trasaction added',
+                        style: TextStyle(color: Colors.red, fontSize: 24),
+                      )
+                    : Column(
+                        children: List.generate(transactions.length, (index) {
+                        return Column(
                           children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: grey.withOpacity(0.1),
-                              ),
-                              child: Center(
-                                child: Image.asset(
-                                  // daily[index]['icon'],
-                                  'assets/images/bank.png',
-                                  width: 30,
-                                  height: 30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: (size.width - 40) * 0.7,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: grey.withOpacity(0.1),
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            // daily[index]['icon'],
+                                            'assets/images/bank.png',
+                                            width: 30,
+                                            height: 30,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 15),
+                                      Container(
+                                        width: (size.width - 90) * 0.5,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              transactions[index].description,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: black,
+                                                  fontWeight: FontWeight.w500),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              transactions[index]
+                                                  .date
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: black.withOpacity(0.5),
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                  width: (size.width - 40) * 0.3,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        transactions[index].typeId == 1
+                                            ? '+ ${transactions[index].amount.toString()}'
+                                            : '- ${transactions[index].amount.toString()}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 15,
+                                            color:
+                                                transactions[index].typeId == 1
+                                                    ? Colors.green
+                                                    : Colors.red),
+                                      ),
+                                      IconButton(
+                                          onPressed: () async {
+                                            await Transaction.delete(
+                                                transactions[index].id);
+                                            refreshTx();
+                                          },
+                                          icon: const Icon(Icons.delete),
+                                          color: Colors.red)
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
-                            SizedBox(width: 15),
-                            Container(
-                              width: (size.width - 90) * 0.5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    transactions[index].description,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: black,
-                                        fontWeight: FontWeight.w500),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    transactions[index].date.toString(),
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: black.withOpacity(0.5),
-                                        fontWeight: FontWeight.w400),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 65, top: 8),
+                              child: Divider(
+                                thickness: 0.8,
                               ),
                             )
                           ],
-                        ),
-                      ),
-                      Container(
-                        width: (size.width - 40) * 0.3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              transactions[index].typeId == 1 ? '+ ${transactions[index].amount.toString()}' : '- ${transactions[index].amount.toString()}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  color: transactions[index].typeId == 1 ? Colors.green : Colors.red),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 65, top: 8),
-                    child: Divider(
-                      thickness: 0.8,
-                    ),
-                  )
-                ],
-              );
-            })),
+                        );
+                      })),
           ),
           SizedBox(
             height: 15,

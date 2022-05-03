@@ -18,7 +18,6 @@
 //   }
 // }
 
-
 // New transaction manages the adding item part
 
 import 'package:flutter/material.dart';
@@ -32,9 +31,10 @@ class NewTransaction extends StatefulWidget {
   // late means assigning value to that var later
 
   final Function addTx;
+  final int? typeId;
   // to accept the execution function from user_transactions
 
-  NewTransaction(this.addTx);
+  NewTransaction(this.addTx, [this.typeId]);
 
   @override
   _NewTransactionState createState() => _NewTransactionState();
@@ -49,7 +49,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   void _onSubmit() {
     final text = _titleController.text;
-    final amount = double.parse(_amountController.text);
+    final amount = int.parse(_amountController.text);
     // double.parse() because that function takes amount in double not string, so converted,
     // if not convertable then it thrown an error
 
@@ -57,9 +57,9 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget.addTx(text, amount, _selectedDate, 1, 1, 1);
+    widget.addTx(text, amount, _selectedDate, widget.typeId, 1, 1, 1);
     // widget. means importing the function addTx from NewTransaction class above to _NewTransactionState class
-
+    // refreshTxType();
     Navigator.of(context).pop();
     // this closes the pop up sheet after submitting values automatically
   }
@@ -136,7 +136,7 @@ class _NewTransactionState extends State<NewTransaction> {
                         _selectedDate == DateTime(2022)
                             ? DateTime.now().toString()
                             : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
-                            // : _selectedDate.toString(),
+                        // : _selectedDate.toString(),
                       ),
                     ),
                     const SizedBox(
